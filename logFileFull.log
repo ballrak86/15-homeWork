@@ -1,0 +1,291 @@
+root@otssTestServer:/home/lx/git/test# vagrant ssh
+[vagrant@vm-gkuOA1801016 ~]$ sudo -i
+[root@vm-gkuOA1801016 ~]# yum -y -q install wget nano
+Failed to set locale, defaulting to C
+warning: /var/cache/yum/x86_64/7/base/packages/nano-2.3.1-10.el7.x86_64.rpm: Header V3 RSA/SHA256 Signature, key ID f4a80eb5: NOKEY
+Public key for nano-2.3.1-10.el7.x86_64.rpm is not installed
+Importing GPG key 0xF4A80EB5:
+ Userid     : "CentOS-7 Key (CentOS 7 Official Signing Key) <security@centos.org>"
+ Fingerprint: 6341 ab27 53d7 8a78 a7c2 7bb1 24c6 a8a7 f4a8 0eb5
+ Package    : centos-release-7-8.2003.0.el7.centos.x86_64 (@anaconda)
+ From       : /etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-7
+[root@vm-gkuOA1801016 ~]# cd /usr/src/
+[root@vm-gkuOA1801016 src]# wget https://github.com/prometheus/prometheus/releases/download/v2.30.2/prometheus-2.30.2.linux-amd64.tar.gz
+--2021-10-05 10:52:34--  https://github.com/prometheus/prometheus/releases/download/v2.30.2/prometheus-2.30.2.linux-amd64.tar.gz
+Resolving github.com (github.com)... 140.82.121.4
+Connecting to github.com (github.com)|140.82.121.4|:443... connected.
+HTTP request sent, awaiting response... 302 Found
+Location: https://github-releases.githubusercontent.com/6838921/89d39d16-5d28-4856-a305-8484e405a9d1?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAIWNJYAX4CSVEH53A%2F20211005%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20211005T105234Z&X-Amz-Expires=300&X-Amz-Signature=08a929d54a41661dfe5dd2fabf917dc1a84708268df5534ed3ba23be416200ca&X-Amz-SignedHeaders=host&actor_id=0&key_id=0&repo_id=6838921&response-content-disposition=attachment%3B%20filename%3Dprometheus-2.30.2.linux-amd64.tar.gz&response-content-type=application%2Foctet-stream [following]
+--2021-10-05 10:52:34--  https://github-releases.githubusercontent.com/6838921/89d39d16-5d28-4856-a305-8484e405a9d1?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAIWNJYAX4CSVEH53A%2F20211005%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20211005T105234Z&X-Amz-Expires=300&X-Amz-Signature=08a929d54a41661dfe5dd2fabf917dc1a84708268df5534ed3ba23be416200ca&X-Amz-SignedHeaders=host&actor_id=0&key_id=0&repo_id=6838921&response-content-disposition=attachment%3B%20filename%3Dprometheus-2.30.2.linux-amd64.tar.gz&response-content-type=application%2Foctet-stream
+Resolving github-releases.githubusercontent.com (github-releases.githubusercontent.com)... 185.199.111.154, 185.199.109.154, 185.199.110.154, ...
+Connecting to github-releases.githubusercontent.com (github-releases.githubusercontent.com)|185.199.111.154|:443... connected.
+HTTP request sent, awaiting response... 200 OK
+Length: 72625617 (69M) [application/octet-stream]
+Saving to: 'prometheus-2.30.2.linux-amd64.tar.gz'
+
+100%[===================================================================================================================================================================================================>] 72,625,617  26.8MB/s   in 2.6s
+
+2021-10-05 10:52:37 (26.8 MB/s) - 'prometheus-2.30.2.linux-amd64.tar.gz' saved [72625617/72625617]
+
+[root@vm-gkuOA1801016 src]# tar xvzf prometheus-2.30.2.linux-amd64.tar.gz
+prometheus-2.30.2.linux-amd64/
+prometheus-2.30.2.linux-amd64/consoles/
+prometheus-2.30.2.linux-amd64/consoles/index.html.example
+prometheus-2.30.2.linux-amd64/consoles/node-cpu.html
+prometheus-2.30.2.linux-amd64/consoles/node-disk.html
+prometheus-2.30.2.linux-amd64/consoles/node-overview.html
+prometheus-2.30.2.linux-amd64/consoles/node.html
+prometheus-2.30.2.linux-amd64/consoles/prometheus-overview.html
+prometheus-2.30.2.linux-amd64/consoles/prometheus.html
+prometheus-2.30.2.linux-amd64/console_libraries/
+prometheus-2.30.2.linux-amd64/console_libraries/menu.lib
+prometheus-2.30.2.linux-amd64/console_libraries/prom.lib
+prometheus-2.30.2.linux-amd64/prometheus.yml
+prometheus-2.30.2.linux-amd64/LICENSE
+prometheus-2.30.2.linux-amd64/NOTICE
+prometheus-2.30.2.linux-amd64/prometheus
+prometheus-2.30.2.linux-amd64/promtool
+[root@vm-gkuOA1801016 src]# cd prometheus-2.30.2.linux-amd64/
+[root@vm-gkuOA1801016 prometheus-2.30.2.linux-amd64]# cp prometheus promtool /usr/bin/
+[root@vm-gkuOA1801016 prometheus-2.30.2.linux-amd64]# mkdir /etc/prometheus
+[root@vm-gkuOA1801016 prometheus-2.30.2.linux-amd64]# cp -R console* /etc/prometheus/
+[root@vm-gkuOA1801016 prometheus-2.30.2.linux-amd64]# cp prometheus.yml /etc/prometheus/
+[root@vm-gkuOA1801016 prometheus-2.30.2.linux-amd64]# ll /etc/prometheus/
+total 4
+drwxr-xr-x. 2 root root  38 Oct  5 10:53 console_libraries
+drwxr-xr-x. 2 root root 173 Oct  5 10:53 consoles
+-rw-r--r--. 1 root root 934 Oct  5 10:53 prometheus.yml
+[root@vm-gkuOA1801016 prometheus-2.30.2.linux-amd64]# nano /etc/yum.repos.d/grafana.repo
+[root@vm-gkuOA1801016 prometheus-2.30.2.linux-amd64]# yum -y -q install grafana
+[root@vm-gkuOA1801016 prometheus-2.30.2.linux-amd64]# systemctl start grafana-server.service
+[root@vm-gkuOA1801016 prometheus-2.30.2.linux-amd64]# systemctl enable grafana-server.service
+Created symlink from /etc/systemd/system/multi-user.target.wants/grafana-server.service to /usr/lib/systemd/system/grafana-server.service.
+[root@vm-gkuOA1801016 prometheus-2.30.2.linux-amd64]# systemctl status grafana-server.service
+● grafana-server.service - Grafana instance
+   Loaded: loaded (/usr/lib/systemd/system/grafana-server.service; enabled; vendor preset: disabled)
+   Active: active (running) since Tue 2021-10-05 11:01:50 UTC; 2s ago
+     Docs: http://docs.grafana.org
+ Main PID: 3130 (grafana-server)
+   CGroup: /system.slice/grafana-server.service
+           └─3130 /usr/sbin/grafana-server --config=/etc/grafana/grafana.ini --pidfile=/var/run/grafana/grafana-server.pid --packaging=rpm cfg:default.paths.logs=/var/log/grafana cfg:default.paths.data=/var/lib/grafana cfg:default.pat...
+
+Oct 05 11:01:50 vm-gkuOA1801016.kontur grafana-server[3130]: t=2021-10-05T11:01:50+0000 lvl=info msg="Executing migration" logger=migrator id="add index library_element_connection element_id-kind-connection_id"
+Oct 05 11:01:50 vm-gkuOA1801016.kontur grafana-server[3130]: t=2021-10-05T11:01:50+0000 lvl=info msg="migrations completed" logger=migrator performed=330 skipped=0 duration=2.673804733s
+Oct 05 11:01:50 vm-gkuOA1801016.kontur grafana-server[3130]: t=2021-10-05T11:01:50+0000 lvl=info msg="Created default admin" logger=sqlstore user=admin
+Oct 05 11:01:50 vm-gkuOA1801016.kontur grafana-server[3130]: t=2021-10-05T11:01:50+0000 lvl=info msg="Created default organization" logger=sqlstore
+Oct 05 11:01:50 vm-gkuOA1801016.kontur grafana-server[3130]: t=2021-10-05T11:01:50+0000 lvl=info msg="Starting plugin search" logger=plugins
+Oct 05 11:01:50 vm-gkuOA1801016.kontur grafana-server[3130]: t=2021-10-05T11:01:50+0000 lvl=info msg="Registering plugin" logger=plugins id=input
+Oct 05 11:01:50 vm-gkuOA1801016.kontur grafana-server[3130]: t=2021-10-05T11:01:50+0000 lvl=info msg="External plugins directory created" logger=plugins directory=/var/lib/grafana/plugins
+Oct 05 11:01:50 vm-gkuOA1801016.kontur grafana-server[3130]: t=2021-10-05T11:01:50+0000 lvl=info msg="Live Push Gateway initialization" logger=live.push_http
+Oct 05 11:01:50 vm-gkuOA1801016.kontur systemd[1]: Started Grafana instance.
+Oct 05 11:01:50 vm-gkuOA1801016.kontur grafana-server[3130]: t=2021-10-05T11:01:50+0000 lvl=info msg="HTTP Server Listen" logger=http.server address=[::]:3000 protocol=http subUrl= socket=
+[root@vm-gkuOA1801016 prometheus-2.30.2.linux-amd64]# wget https://github.com/prometheus/node_exporter/releases/download/v1.2.2/node_exporter-1.2.2.linux-amd64.tar.gz
+--2021-10-05 11:01:59--  https://github.com/prometheus/node_exporter/releases/download/v1.2.2/node_exporter-1.2.2.linux-amd64.tar.gz
+Resolving github.com (github.com)... 140.82.121.4
+Connecting to github.com (github.com)|140.82.121.4|:443... connected.
+HTTP request sent, awaiting response... 302 Found
+Location: https://github-releases.githubusercontent.com/9524057/28598a7c-d8ad-483d-85ba-8b2c9c08cf57?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAIWNJYAX4CSVEH53A%2F20211005%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20211005T110010Z&X-Amz-Expires=300&X-Amz-Signature=f5bef101befffea2f30f161c88a2ca27b5f702d882eb67ef81699cad527807fc&X-Amz-SignedHeaders=host&actor_id=0&key_id=0&repo_id=9524057&response-content-disposition=attachment%3B%20filename%3Dnode_exporter-1.2.2.linux-amd64.tar.gz&response-content-type=application%2Foctet-stream [following]
+--2021-10-05 11:02:00--  https://github-releases.githubusercontent.com/9524057/28598a7c-d8ad-483d-85ba-8b2c9c08cf57?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAIWNJYAX4CSVEH53A%2F20211005%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20211005T110010Z&X-Amz-Expires=300&X-Amz-Signature=f5bef101befffea2f30f161c88a2ca27b5f702d882eb67ef81699cad527807fc&X-Amz-SignedHeaders=host&actor_id=0&key_id=0&repo_id=9524057&response-content-disposition=attachment%3B%20filename%3Dnode_exporter-1.2.2.linux-amd64.tar.gz&response-content-type=application%2Foctet-stream
+Resolving github-releases.githubusercontent.com (github-releases.githubusercontent.com)... 185.199.108.154, 185.199.110.154, 185.199.109.154, ...
+Connecting to github-releases.githubusercontent.com (github-releases.githubusercontent.com)|185.199.108.154|:443... connected.
+HTTP request sent, awaiting response... 200 OK
+Length: 8898481 (8.5M) [application/octet-stream]
+Saving to: 'node_exporter-1.2.2.linux-amd64.tar.gz'
+
+100%[===================================================================================================================================================================================================>] 8,898,481   16.0MB/s   in 0.5s
+
+2021-10-05 11:02:00 (16.0 MB/s) - 'node_exporter-1.2.2.linux-amd64.tar.gz' saved [8898481/8898481]
+
+[root@vm-gkuOA1801016 prometheus-2.30.2.linux-amd64]# tar xvzf node_exporter-1.2.2.linux-amd64.tar.gz
+node_exporter-1.2.2.linux-amd64/
+node_exporter-1.2.2.linux-amd64/LICENSE
+node_exporter-1.2.2.linux-amd64/NOTICE
+node_exporter-1.2.2.linux-amd64/node_exporter
+[root@vm-gkuOA1801016 prometheus-2.30.2.linux-amd64]# cd node_exporter-1.2.2.linux-amd64
+[root@vm-gkuOA1801016 node_exporter-1.2.2.linux-amd64]# cp node_exporter /usr/bin/
+[root@vm-gkuOA1801016 node_exporter-1.2.2.linux-amd64]# node_exporter &
+[1] 3159
+[root@vm-gkuOA1801016 node_exporter-1.2.2.linux-amd64]# level=info ts=2021-10-05T11:02:26.482Z caller=node_exporter.go:182 msg="Starting node_exporter" version="(version=1.2.2, branch=HEAD, revision=26645363b486e12be40af7ce4fc91e731a33104e)"
+level=info ts=2021-10-05T11:02:26.482Z caller=node_exporter.go:183 msg="Build context" build_context="(go=go1.16.7, user=root@b9cb4aa2eb17, date=20210806-13:44:18)"
+level=warn ts=2021-10-05T11:02:26.482Z caller=node_exporter.go:185 msg="Node Exporter is running as root user. This exporter is designed to run as unpriviledged user, root is not required."
+level=info ts=2021-10-05T11:02:26.482Z caller=filesystem_common.go:110 collector=filesystem msg="Parsed flag --collector.filesystem.mount-points-exclude" flag=^/(dev|proc|sys|var/lib/docker/.+)($|/)
+level=info ts=2021-10-05T11:02:26.482Z caller=filesystem_common.go:112 collector=filesystem msg="Parsed flag --collector.filesystem.fs-types-exclude" flag=^(autofs|binfmt_misc|bpf|cgroup2?|configfs|debugfs|devpts|devtmpfs|fusectl|hugetlbfs|iso9660|mqueue|nsfs|overlay|proc|procfs|pstore|rpc_pipefs|securityfs|selinuxfs|squashfs|sysfs|tracefs)$
+level=info ts=2021-10-05T11:02:26.483Z caller=node_exporter.go:108 msg="Enabled collectors"
+level=info ts=2021-10-05T11:02:26.483Z caller=node_exporter.go:115 collector=arp
+level=info ts=2021-10-05T11:02:26.483Z caller=node_exporter.go:115 collector=bcache
+level=info ts=2021-10-05T11:02:26.483Z caller=node_exporter.go:115 collector=bonding
+level=info ts=2021-10-05T11:02:26.483Z caller=node_exporter.go:115 collector=btrfs
+level=info ts=2021-10-05T11:02:26.483Z caller=node_exporter.go:115 collector=conntrack
+level=info ts=2021-10-05T11:02:26.483Z caller=node_exporter.go:115 collector=cpu
+level=info ts=2021-10-05T11:02:26.483Z caller=node_exporter.go:115 collector=cpufreq
+level=info ts=2021-10-05T11:02:26.483Z caller=node_exporter.go:115 collector=diskstats
+level=info ts=2021-10-05T11:02:26.483Z caller=node_exporter.go:115 collector=edac
+level=info ts=2021-10-05T11:02:26.483Z caller=node_exporter.go:115 collector=entropy
+level=info ts=2021-10-05T11:02:26.483Z caller=node_exporter.go:115 collector=fibrechannel
+level=info ts=2021-10-05T11:02:26.483Z caller=node_exporter.go:115 collector=filefd
+level=info ts=2021-10-05T11:02:26.483Z caller=node_exporter.go:115 collector=filesystem
+level=info ts=2021-10-05T11:02:26.483Z caller=node_exporter.go:115 collector=hwmon
+level=info ts=2021-10-05T11:02:26.483Z caller=node_exporter.go:115 collector=infiniband
+level=info ts=2021-10-05T11:02:26.483Z caller=node_exporter.go:115 collector=ipvs
+level=info ts=2021-10-05T11:02:26.483Z caller=node_exporter.go:115 collector=loadavg
+level=info ts=2021-10-05T11:02:26.483Z caller=node_exporter.go:115 collector=mdadm
+level=info ts=2021-10-05T11:02:26.483Z caller=node_exporter.go:115 collector=meminfo
+level=info ts=2021-10-05T11:02:26.483Z caller=node_exporter.go:115 collector=netclass
+level=info ts=2021-10-05T11:02:26.483Z caller=node_exporter.go:115 collector=netdev
+level=info ts=2021-10-05T11:02:26.483Z caller=node_exporter.go:115 collector=netstat
+level=info ts=2021-10-05T11:02:26.483Z caller=node_exporter.go:115 collector=nfs
+level=info ts=2021-10-05T11:02:26.483Z caller=node_exporter.go:115 collector=nfsd
+level=info ts=2021-10-05T11:02:26.483Z caller=node_exporter.go:115 collector=nvme
+level=info ts=2021-10-05T11:02:26.483Z caller=node_exporter.go:115 collector=powersupplyclass
+level=info ts=2021-10-05T11:02:26.483Z caller=node_exporter.go:115 collector=pressure
+level=info ts=2021-10-05T11:02:26.483Z caller=node_exporter.go:115 collector=rapl
+level=info ts=2021-10-05T11:02:26.483Z caller=node_exporter.go:115 collector=schedstat
+level=info ts=2021-10-05T11:02:26.483Z caller=node_exporter.go:115 collector=sockstat
+level=info ts=2021-10-05T11:02:26.483Z caller=node_exporter.go:115 collector=softnet
+level=info ts=2021-10-05T11:02:26.483Z caller=node_exporter.go:115 collector=stat
+level=info ts=2021-10-05T11:02:26.484Z caller=node_exporter.go:115 collector=tapestats
+level=info ts=2021-10-05T11:02:26.484Z caller=node_exporter.go:115 collector=textfile
+level=info ts=2021-10-05T11:02:26.484Z caller=node_exporter.go:115 collector=thermal_zone
+level=info ts=2021-10-05T11:02:26.484Z caller=node_exporter.go:115 collector=time
+level=info ts=2021-10-05T11:02:26.484Z caller=node_exporter.go:115 collector=timex
+level=info ts=2021-10-05T11:02:26.484Z caller=node_exporter.go:115 collector=udp_queues
+level=info ts=2021-10-05T11:02:26.484Z caller=node_exporter.go:115 collector=uname
+level=info ts=2021-10-05T11:02:26.484Z caller=node_exporter.go:115 collector=vmstat
+level=info ts=2021-10-05T11:02:26.484Z caller=node_exporter.go:115 collector=xfs
+level=info ts=2021-10-05T11:02:26.484Z caller=node_exporter.go:115 collector=zfs
+level=info ts=2021-10-05T11:02:26.484Z caller=node_exporter.go:199 msg="Listening on" address=:9100
+level=info ts=2021-10-05T11:02:26.485Z caller=tls_config.go:191 msg="TLS is disabled." http2=false
+
+[root@vm-gkuOA1801016 node_exporter-1.2.2.linux-amd6nano /etc/prometheus/prometheus.yml
+[root@vm-gkuOA1801016 node_exporter-1.2.2.linux-amd64]# cat /etc/prometheus/prometheus.yml
+# my global config
+global:
+  scrape_interval: 15s # Set the scrape interval to every 15 seconds. Default is every 1 minute.
+  evaluation_interval: 15s # Evaluate rules every 15 seconds. The default is every 1 minute.
+  # scrape_timeout is set to the global default (10s).
+
+# Alertmanager configuration
+alerting:
+  alertmanagers:
+    - static_configs:
+        - targets:
+          # - alertmanager:9093
+
+# Load rules once and periodically evaluate them according to the global 'evaluation_interval'.
+rule_files:
+  # - "first_rules.yml"
+  # - "second_rules.yml"
+
+# A scrape configuration containing exactly one endpoint to scrape:
+# Here it's Prometheus itself.
+scrape_configs:
+  # The job name is added as a label `job=<job_name>` to any timeseries scraped from this config.
+  - job_name: "prometheus"
+
+    # metrics_path defaults to '/metrics'
+    # scheme defaults to 'http'.
+
+    static_configs:
+      - targets: ["localhost:9090"]
+
+   - job_name: node
+    static_configs:
+      - targets: ['localhost:9100']
+[root@vm-gkuOA1801016 node_exporter-1.2.2.linux-amd64]# prometheus --config.file=/etc/prometheus/prometheus.yml --storage.tsdb.path /var/lib/prometheus/ &
+[root@vm-gkuOA1801016 node_exporter-1.2.2.linux-amd64]# mkdir /var/lib/prometheus/
+[root@vm-gkuOA1801016 node_exporter-1.2.2.linux-amd64]# prometheus --config.file=/etc/prometheus/prometheus.yml --storage.tsdb.path /var/lib/prometheus/ &
+[2] 3172
+[root@vm-gkuOA1801016 node_exporter-1.2.2.linux-amd64]# level=error ts=2021-10-05T11:04:19.031Z caller=main.go:360 msg="Error loading config (--config.file=/etc/prometheus/prometheus.yml)" err="parsing YAML file /etc/prometheus/prometheus.yml: yaml: line 30: did not find expected '-' indicator"
+
+[2]+  Exit 2                  prometheus --config.file=/etc/prometheus/prometheus.yml --storage.tsdb.path /var/lib/prometheus/
+[root@vm-gkuOA1801016 node_exporter-1.2.2.linux-amd64]# nano /etc/prometheus/prometheus.yml
+[root@vm-gkuOA1801016 node_exporter-1.2.2.linux-amd64]# prometheus --config.file=/etc/prometheus/prometheus.yml --storage.tsdb.path /var/lib/prometheus/ &
+[2] 3177
+[root@vm-gkuOA1801016 node_exporter-1.2.2.linux-amd64]# level=info ts=2021-10-05T11:04:59.952Z caller=main.go:400 msg="No time or size retention was set so using the default time retention" duration=15d
+level=info ts=2021-10-05T11:04:59.952Z caller=main.go:438 msg="Starting Prometheus" version="(version=2.30.2, branch=HEAD, revision=b30db03f35651888e34ac101a06e25d27d15b476)"
+level=info ts=2021-10-05T11:04:59.952Z caller=main.go:443 build_context="(go=go1.17.1, user=root@80d1e84a93dd, date=20211001-12:26:58)"
+level=info ts=2021-10-05T11:04:59.952Z caller=main.go:444 host_details="(Linux 3.10.0-1127.el7.x86_64 #1 SMP Tue Mar 31 23:36:51 UTC 2020 x86_64 vm-gkuOA1801016.kontur (none))"
+level=info ts=2021-10-05T11:04:59.952Z caller=main.go:445 fd_limits="(soft=1024, hard=4096)"
+level=info ts=2021-10-05T11:04:59.952Z caller=main.go:446 vm_limits="(soft=unlimited, hard=unlimited)"
+level=info ts=2021-10-05T11:04:59.956Z caller=web.go:541 component=web msg="Start listening for connections" address=0.0.0.0:9090
+level=info ts=2021-10-05T11:04:59.959Z caller=main.go:822 msg="Starting TSDB ..."
+level=info ts=2021-10-05T11:04:59.970Z caller=tls_config.go:191 component=web msg="TLS is disabled." http2=false
+level=info ts=2021-10-05T11:04:59.970Z caller=head.go:466 component=tsdb msg="Replaying on-disk memory mappable chunks if any"
+level=info ts=2021-10-05T11:04:59.970Z caller=head.go:500 component=tsdb msg="On-disk memory mappable chunks replay completed" duration=12.94µs
+level=info ts=2021-10-05T11:04:59.970Z caller=head.go:506 component=tsdb msg="Replaying WAL, this may take a while"
+level=info ts=2021-10-05T11:04:59.971Z caller=head.go:577 component=tsdb msg="WAL segment loaded" segment=0 maxSegment=0
+level=info ts=2021-10-05T11:04:59.971Z caller=head.go:583 component=tsdb msg="WAL replay completed" checkpoint_replay_duration=35.948µs wal_replay_duration=543.877µs total_replay_duration=611.485µs
+level=info ts=2021-10-05T11:04:59.975Z caller=main.go:849 fs_type=XFS_SUPER_MAGIC
+level=info ts=2021-10-05T11:04:59.975Z caller=main.go:852 msg="TSDB started"
+level=info ts=2021-10-05T11:04:59.975Z caller=main.go:979 msg="Loading configuration file" filename=/etc/prometheus/prometheus.yml
+level=info ts=2021-10-05T11:04:59.980Z caller=main.go:1016 msg="Completed loading of configuration file" filename=/etc/prometheus/prometheus.yml totalDuration=4.6135ms db_storage=899ns remote_storage=3.755µs web_handler=320ns query_engine=783ns scrape=4.044849ms scrape_sd=67.172µs notify=41.8µs notify_sd=12.174µs rules=8.32µs
+level=info ts=2021-10-05T11:04:59.980Z caller=main.go:794 msg="Server is ready to receive web requests."
+
+[root@vm-gkuOA1801016 node_exporter-1.2.2.linux-amd64]#
+[root@vm-gkuOA1801016 node_exporter-1.2.2.linux-amd64]# ps ax | grep -e prometheus -e node_exporter
+ 3159 pts/0    Sl     0:00 node_exporter
+ 3177 pts/0    Sl     0:00 prometheus --config.file=/etc/prometheus/prometheus.yml --storage.tsdb.path /var/lib/prometheus/
+ 3187 pts/0    R+     0:00 grep --color=auto -e prometheus -e node_exporter
+[root@vm-gkuOA1801016 node_exporter-1.2.2.linuxsystemctl status grafana-server.service
+● grafana-server.service - Grafana instance
+   Loaded: loaded (/usr/lib/systemd/system/grafana-server.service; enabled; vendor preset: disabled)
+   Active: active (running) since Tue 2021-10-05 11:01:50 UTC; 9min ago
+     Docs: http://docs.grafana.org
+ Main PID: 3130 (grafana-server)
+   CGroup: /system.slice/grafana-server.service
+           └─3130 /usr/sbin/grafana-server --config=/etc/grafana/grafana.ini --pidfile=/var/run/grafana/grafana-server.pid --packaging=rpm cfg:default.paths.logs=/var/log/grafana cfg:default.paths.data=/var/lib/grafana cfg:default.pat...
+
+Oct 05 11:01:50 vm-gkuOA1801016.kontur grafana-server[3130]: t=2021-10-05T11:01:50+0000 lvl=info msg="Executing migration" logger=migrator id="add index library_element_connection element_id-kind-connection_id"
+Oct 05 11:01:50 vm-gkuOA1801016.kontur grafana-server[3130]: t=2021-10-05T11:01:50+0000 lvl=info msg="migrations completed" logger=migrator performed=330 skipped=0 duration=2.673804733s
+Oct 05 11:01:50 vm-gkuOA1801016.kontur grafana-server[3130]: t=2021-10-05T11:01:50+0000 lvl=info msg="Created default admin" logger=sqlstore user=admin
+Oct 05 11:01:50 vm-gkuOA1801016.kontur grafana-server[3130]: t=2021-10-05T11:01:50+0000 lvl=info msg="Created default organization" logger=sqlstore
+Oct 05 11:01:50 vm-gkuOA1801016.kontur grafana-server[3130]: t=2021-10-05T11:01:50+0000 lvl=info msg="Starting plugin search" logger=plugins
+Oct 05 11:01:50 vm-gkuOA1801016.kontur grafana-server[3130]: t=2021-10-05T11:01:50+0000 lvl=info msg="Registering plugin" logger=plugins id=input
+Oct 05 11:01:50 vm-gkuOA1801016.kontur grafana-server[3130]: t=2021-10-05T11:01:50+0000 lvl=info msg="External plugins directory created" logger=plugins directory=/var/lib/grafana/plugins
+Oct 05 11:01:50 vm-gkuOA1801016.kontur grafana-server[3130]: t=2021-10-05T11:01:50+0000 lvl=info msg="Live Push Gateway initialization" logger=live.push_http
+Oct 05 11:01:50 vm-gkuOA1801016.kontur systemd[1]: Started Grafana instance.
+Oct 05 11:01:50 vm-gkuOA1801016.kontur grafana-server[3130]: t=2021-10-05T11:01:50+0000 lvl=info msg="HTTP Server Listen" logger=http.server address=[::]:3000 protocol=http subUrl= socket=
+[root@vm-gkuOA1801016 ~]# nano /etc/systemd/system/node_exporter.service
+[root@vm-gkuOA1801016 ~]# nano /etc/systemd/system/prometheus.service
+[root@vm-gkuOA1801016 ~]# systemctl enable node_exporter prometheus
+Created symlink from /etc/systemd/system/default.target.wants/node_exporter.service to /etc/systemd/system/node_exporter.service.
+Created symlink from /etc/systemd/system/default.target.wants/prometheus.service to /etc/systemd/system/prometheus.service.
+[root@vm-gkuOA1801016 ~]# systemctl start node_exporter prometheus
+[root@vm-gkuOA1801016 ~]# systemctl status node_exporter prometheus
+● node_exporter.service - Node Exporter
+   Loaded: loaded (/etc/systemd/system/node_exporter.service; enabled; vendor preset: disabled)
+   Active: active (running) since Tue 2021-10-05 11:36:05 UTC; 52s ago
+ Main PID: 1049 (node_exporter)
+   CGroup: /system.slice/node_exporter.service
+           └─1049 /bin/node_exporter
+
+Oct 05 11:36:06 vm-gkuOA1801016.kontur node_exporter[1049]: level=info ts=2021-10-05T11:36:06.061Z caller=node_exporter.go:115 collector=thermal_zone
+Oct 05 11:36:06 vm-gkuOA1801016.kontur node_exporter[1049]: level=info ts=2021-10-05T11:36:06.061Z caller=node_exporter.go:115 collector=time
+Oct 05 11:36:06 vm-gkuOA1801016.kontur node_exporter[1049]: level=info ts=2021-10-05T11:36:06.061Z caller=node_exporter.go:115 collector=timex
+Oct 05 11:36:06 vm-gkuOA1801016.kontur node_exporter[1049]: level=info ts=2021-10-05T11:36:06.061Z caller=node_exporter.go:115 collector=udp_queues
+Oct 05 11:36:06 vm-gkuOA1801016.kontur node_exporter[1049]: level=info ts=2021-10-05T11:36:06.061Z caller=node_exporter.go:115 collector=uname
+Oct 05 11:36:06 vm-gkuOA1801016.kontur node_exporter[1049]: level=info ts=2021-10-05T11:36:06.061Z caller=node_exporter.go:115 collector=vmstat
+Oct 05 11:36:06 vm-gkuOA1801016.kontur node_exporter[1049]: level=info ts=2021-10-05T11:36:06.061Z caller=node_exporter.go:115 collector=xfs
+Oct 05 11:36:06 vm-gkuOA1801016.kontur node_exporter[1049]: level=info ts=2021-10-05T11:36:06.061Z caller=node_exporter.go:115 collector=zfs
+Oct 05 11:36:06 vm-gkuOA1801016.kontur node_exporter[1049]: level=info ts=2021-10-05T11:36:06.061Z caller=node_exporter.go:199 msg="Listening on" address=:9100
+Oct 05 11:36:06 vm-gkuOA1801016.kontur node_exporter[1049]: level=info ts=2021-10-05T11:36:06.063Z caller=tls_config.go:191 msg="TLS is disabled." http2=false
+
+● prometheus.service - Prometheus
+   Loaded: loaded (/etc/systemd/system/prometheus.service; enabled; vendor preset: disabled)
+   Active: active (running) since Tue 2021-10-05 11:36:55 UTC; 2s ago
+ Main PID: 1068 (prometheus)
+   CGroup: /system.slice/prometheus.service
+           └─1068 /bin/prometheus --config.file /etc/prometheus/prometheus.yml --storage.tsdb.path /var/lib/prometheus/
+
+Oct 05 11:36:55 vm-gkuOA1801016.kontur prometheus[1068]: level=info ts=2021-10-05T11:36:55.701Z caller=tls_config.go:191 component=web msg="TLS is disabled." http2=false
+Oct 05 11:36:55 vm-gkuOA1801016.kontur prometheus[1068]: level=info ts=2021-10-05T11:36:55.728Z caller=head.go:577 component=tsdb msg="WAL segment loaded" segment=0 maxSegment=2
+Oct 05 11:36:55 vm-gkuOA1801016.kontur prometheus[1068]: level=info ts=2021-10-05T11:36:55.732Z caller=head.go:577 component=tsdb msg="WAL segment loaded" segment=1 maxSegment=2
+Oct 05 11:36:55 vm-gkuOA1801016.kontur prometheus[1068]: level=info ts=2021-10-05T11:36:55.732Z caller=head.go:577 component=tsdb msg="WAL segment loaded" segment=2 maxSegment=2
+Oct 05 11:36:55 vm-gkuOA1801016.kontur prometheus[1068]: level=info ts=2021-10-05T11:36:55.732Z caller=head.go:583 component=tsdb msg="WAL replay completed" checkpoint_replay_duration=67.2µs wal_replay_duration=41.11336…ation=41.233812ms
+Oct 05 11:36:55 vm-gkuOA1801016.kontur prometheus[1068]: level=info ts=2021-10-05T11:36:55.735Z caller=main.go:849 fs_type=XFS_SUPER_MAGIC
+Oct 05 11:36:55 vm-gkuOA1801016.kontur prometheus[1068]: level=info ts=2021-10-05T11:36:55.735Z caller=main.go:852 msg="TSDB started"
+Oct 05 11:36:55 vm-gkuOA1801016.kontur prometheus[1068]: level=info ts=2021-10-05T11:36:55.735Z caller=main.go:979 msg="Loading configuration file" filename=/etc/prometheus/prometheus.yml
+Oct 05 11:36:55 vm-gkuOA1801016.kontur prometheus[1068]: level=info ts=2021-10-05T11:36:55.746Z caller=main.go:1016 msg="Completed loading of configuration file" filename=/etc/prometheus/prometheus.yml totalDuration=10.94668ms db_stor…µs
+Oct 05 11:36:55 vm-gkuOA1801016.kontur prometheus[1068]: level=info ts=2021-10-05T11:36:55.746Z caller=main.go:794 msg="Server is ready to receive web requests."
+Hint: Some lines were ellipsized, use -l to show in full.
+[root@vm-gkuOA180shutdown -h now
